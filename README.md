@@ -1,7 +1,7 @@
-<h1>***** README *****<br>
-*** JUNIPER JNCIS ADV. ROUTING LAB &amp; CONFIGS ***</h1>
+<h1>* README *<br>
+** JUNIPER ROUTING-SWITCHING LAB &amp; CONFIGS **</h1>
 
-This series of configurations were configured for the JUNIPER JNCIS-ENT examination topics. These configurations should help the student understanding of the topic and provide an option to adjust the configuration values to understand traffic patterns.
+This series of configurations were configured for the JUNIPER JNCIS-ENT examination topics. They may be used to assist in studies or for production deployment assistance.
 
 <b>//// HARDWARE | SOFTWARE SPECIFICATIONS \\\\</b><p>
 <i> Virtualized Network Devices:</i>
@@ -16,15 +16,15 @@ Version: 2.0.3-112, QEMU 2.4.0<p>
 
 <i>System Hardware/Environment:</i>
 <blockquote>
-Host: 		EVE-NG Kernel: 4.20.17-eve-ng-ukms+ x86_64 (64 bit) Console: tty 2 Distro: Ubuntu 16.04 xenial <br>
+Host: 	EVE-NG Kernel: 4.20.17-eve-ng-ukms+ x86_64 (64 bit) Console: tty 2 Distro: Ubuntu 16.04 xenial <br>
 <b>Machine Details:</b><br>
 System: 	LENOVO product: 30B5005XUS v: ThinkStation P510<br>
-Mobo: 		LENOVO model: 102F Bios: LENOVO v: S00KT40A date: 05/04/2017<br>
+Mobo: 	LENOVO model: 102F Bios: LENOVO v: S00KT40A date: 05/04/2017<br>
 CPU:       	Hexa core Intel Xeon E5-1650 v4 (-HT-MCP-) speed/max: 1809/4000 MHz<br>
 Graphics:  	Card: NVIDIA GP106GL [Quadro P2000], Display Server: N/A driver: N/A tty size: 160x46 Advanced <br>
 Network:   	Card: Intel Ethernet Connection (2) I218-LM driver: e1000e<br>
 Drives:    	HDD Total Size: 1024.2GB<br>
-Memory:   Array-1 capacity: 1 TB (check) devices: 8 EC: Multi-bit ECC<br>
+Memory:     Array-1 capacity: 1 TB (check) devices: 8 EC: Multi-bit ECC<br>
             Device-1: DIMM_1 size: 8 GB speed: 2400 MHz type: DDR4<br>
             Device-3: DIMM_3 size: 8 GB speed: 2400 MHz type: DDR4<br>
             Device-5: DIMM_2 size: 16 GB speed: 2400 MHz type: DDR4<br>
@@ -50,7 +50,6 @@ This topoly contains three offices and a backbone network. Routing protocols and
 <i>Lab Details:</i>
 <p>
   <b><i>Management interfaces:</i></b>
-<blockquote>
 <ul>
   <li>CSR1/VCP1: 192.168.21.101<br></li>
   <li>CSR2/VCP2: 192.168.21.102<br></li>
@@ -65,7 +64,6 @@ This topoly contains three offices and a backbone network. Routing protocols and
   <li>CSR11/VCP11: 192.168.21.111<br></li>
   <li>CSR12/VCP12: 192.168.21.112<br></li>
  </ul>
-</blockquote>
 <p>
   <b><i>Subnet IP Scheme:</i></b>
 <ul>
@@ -84,3 +82,4 @@ This topoly contains three offices and a backbone network. Routing protocols and
 <p><a target=_blank href="https://www.eve-ng.net/index.php/documentation/" rel="nofollow">EVE-NG Documentation</a></p>
 
 <b>//// LAB IMAGE \\\\</b>
+![Network_Topology](https://user-images.githubusercontent.com/40407552/161385961-00b266ef-465c-43aa-be20-c7046069515e.png)
