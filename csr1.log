@@ -1,0 +1,82 @@
+﻿//// CSR1 \\\\ 
+set version 20200306.092717_builder.r1092714
+set system login user admin uid 1776
+set system login user admin class super-user
+set system login user admin authentication encrypted-password "$6$hUIybAjB$oaSiTlBDOoTjZ6WXI3MUUxQc.oWiEeeoRGGQDnuCIda5vXyLha3BnaxKp5/bvNOlc/ycjIvY9un37wwYAFU/t0"
+set system root-authentication encrypted-password "$6$Fh3/UMBQ$02EPxKQKf8GVI10APZoeL7aILBIZyy1alwp1WLNhzvv.19KA9YclB9ubUoZRrg4ufIDUVuIPMk3f/CVtXPhiZ0"
+set system services ssh root-login allow
+set system services ssh protocol-version v2
+set system services netconf ssh
+set system host-name CSR1
+set system domain-name bytesofcloud.local
+set system domain-search bytesofcloud.local
+set system time-zone America/Chicago
+set system management-instance
+set system syslog user * any emergency
+set system syslog file messages any notice
+set system syslog file messages authorization info
+set system syslog file interactive-commands interactive-commands any
+set interfaces ge-0/0/0 unit 0 description CSR2
+set interfaces ge-0/0/0 unit 0 family inet address 172.16.255.1/30
+set interfaces ge-0/0/0 unit 0 family iso
+set interfaces ge-0/0/1 unit 0 description CSR4
+set interfaces ge-0/0/1 unit 0 family inet address 172.16.255.5/30
+set interfaces ge-0/0/1 unit 0 family iso
+set interfaces ge-0/0/2 description CSR5
+set interfaces ge-0/0/2 unit 0 description CSR4
+set interfaces ge-0/0/2 unit 0 family inet address 172.16.255.9/30
+set interfaces ge-0/0/2 unit 0 family iso
+set interfaces ge-0/0/3 description CSR7
+set interfaces ge-0/0/3 unit 0 description CSR7
+set interfaces ge-0/0/3 unit 0 family inet address 172.16.255.26/30
+set interfaces ge-0/0/3 unit 0 family iso
+set interfaces fxp0 description "OOB MGMT"
+set interfaces fxp0 unit 0 family inet address 192.168.21.101/24
+set interfaces lo0 description "NETWORK MGMT"
+set interfaces lo0 unit 0 family inet address 10.255.255.101/32
+set interfaces lo0 unit 0 family iso address 49.0000.0000.0000.0101.00
+set policy-options policy-statement BGP-EXPORT term 1 then load-balance per-packet
+set policy-options policy-statement BGP-EXPORT term 2 from protocol direct
+set policy-options policy-statement BGP-EXPORT term 2 then accept
+set policy-options policy-statement OSPF-EXPORT term 1 then load-balance per-packet
+set policy-options policy-statement OSPF-EXPORT term 2 from interface lo0.0
+set policy-options policy-statement OSPF-EXPORT term 2 then accept
+set routing-instances mgmt_junos routing-options static route 0.0.0.0/0 next-hop 192.168.21.1
+set routing-options router-id 10.255.255.101
+set routing-options autonomous-system 65500
+set protocols bgp group INTERNAL-BGP type internal
+set protocols bgp group INTERNAL-BGP multihop ttl 1
+set protocols bgp group INTERNAL-BGP local-address 10.255.255.101
+set protocols bgp group INTERNAL-BGP export BGP-EXPORT
+set protocols bgp group INTERNAL-BGP neighbor 10.255.255.102 description CSR2
+set protocols bgp group INTERNAL-BGP neighbor 10.255.255.104 description CSR4
+set protocols bgp group INTERNAL-BGP neighbor 10.255.255.105 description CSR5
+set protocols bgp group INTERNAL-BGP neighbor 10.255.255.103 description CSR3
+set protocols bgp group INTERNAL-BGP neighbor 10.255.255.103 multihop ttl 2
+set protocols bgp group INTERNAL-BGP neighbor 10.255.255.106 description CSR6
+set protocols bgp group INTERNAL-BGP neighbor 10.255.255.106 multihop ttl 2
+set protocols bgp group EXTERNAL-BGP type external
+set protocols bgp group EXTERNAL-BGP local-address 172.16.255.26
+set protocols bgp group EXTERNAL-BGP neighbor 172.16.255.25 description CSR7
+set protocols bgp group EXTERNAL-BGP neighbor 172.16.255.25 peer-as 65501
+set protocols isis level 1 disable
+set protocols isis interface ge-0/0/0.0
+set protocols isis interface ge-0/0/1.0
+set protocols isis interface ge-0/0/2.0
+set protocols isis interface ge-0/0/3.0
+set protocols isis interface lo0.0 level 1 disable
+set protocols isis disable
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0 interface-type p2p
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0 interface-type p2p
+set protocols ospf area 0.0.0.0 interface ge-0/0/2.0 interface-type p2p
+set protocols ospf area 0.0.0.1 nssa default-lsa default-metric 10
+set protocols ospf area 0.0.0.1 nssa default-lsa metric-type 1
+set protocols ospf area 0.0.0.1 nssa default-lsa type-7
+set protocols ospf area 0.0.0.1 nssa no-summaries
+set protocols ospf area 0.0.0.1 interface ge-0/0/3.0 disable
+set protocols ospf area 0.0.0.1 interface ge-0/0/3.0 interface-type p2p
+set protocols ospf export OSPF-EXPORT
+set protocols lldp interface all
+set protocols lldp interface ge-0/0/3
+
+

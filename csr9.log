@@ -1,0 +1,87 @@
+﻿//// CSR9 \\\\ 
+
+set version 20200306.092717_builder.r1092714
+set system login user admin uid 1776
+set system login user admin class super-user
+set system login user admin authentication encrypted-password "$6$hUIybAjB$oaSiTlBDOoTjZ6WXI3MUUxQc.oWiEeeoRGGQDnuCIda5vXyLha3BnaxKp5/bvNOlc/ycjIvY9un37wwYAFU/t0"
+set system root-authentication encrypted-password "$6$Fh3/UMBQ$02EPxKQKf8GVI10APZoeL7aILBIZyy1alwp1WLNhzvv.19KA9YclB9ubUoZRrg4ufIDUVuIPMk3f/CVtXPhiZ0"
+set system services ssh root-login allow
+set system services ssh protocol-version v2
+set system services netconf ssh
+set system host-name CSR9
+set system domain-name bytesofcloud.local
+set system domain-search bytesofcloud.local
+set system time-zone America/Chicago
+set system management-instance
+set system syslog user * any emergency
+set system syslog file messages any notice
+set system syslog file messages authorization info
+set system syslog file interactive-commands interactive-commands any
+set interfaces ge-0/0/0 description CSR10
+set interfaces ge-0/0/0 unit 0 family bridge interface-mode trunk
+set interfaces ge-0/0/0 unit 0 family bridge vlan-id-list 10-250
+set interfaces ge-0/0/1 description CSR6
+set interfaces ge-0/0/1 unit 0 family inet address 172.16.255.65/30
+set interfaces ge-0/0/1 unit 0 family iso
+set interfaces ge-0/0/2 unit 0 family bridge interface-mode trunk
+set interfaces ge-0/0/2 unit 0 family bridge vlan-id-list 1-300
+set interfaces ge-0/0/9 unit 0 family bridge interface-mode trunk
+set interfaces ge-0/0/9 unit 0 family bridge vlan-id-list 1
+set interfaces ge-0/0/9 unit 0 family bridge vlan-id-list 50-300
+set interfaces fxp0 description "OOB MGMT"
+set interfaces fxp0 unit 0 family inet address 192.168.21.109/24
+set interfaces irb unit 10 description "NETWORK MGMT"
+set interfaces irb unit 10 family inet address 192.168.9.2/24 vrrp-group 10 virtual-address 192.168.9.1
+set interfaces irb unit 10 family inet address 192.168.9.2/24 vrrp-group 10 priority 110
+set interfaces irb unit 10 family inet address 192.168.9.2/24 vrrp-group 10 preempt
+set interfaces irb unit 10 family inet address 192.168.9.2/24 vrrp-group 10 accept-data
+set interfaces irb unit 215 description "USER 215"
+set interfaces irb unit 215 family inet address 192.168.10.2/24 vrrp-group 215 virtual-address 192.168.10.1
+set interfaces irb unit 215 family inet address 192.168.10.2/24 vrrp-group 215 priority 110
+set interfaces irb unit 215 family inet address 192.168.10.2/24 vrrp-group 215 preempt
+set interfaces irb unit 215 family inet address 192.168.10.2/24 vrrp-group 215 accept-data
+set interfaces lo0 description "NETWORK MGMT"
+set interfaces lo0 unit 0 family inet address 10.255.255.109/32
+set interfaces lo0 unit 0 family iso address 49.0002.0000.0000.0109.00
+set policy-options policy-statement EBGP-EXPORT term 1 then load-balance per-packet
+set policy-options policy-statement EBGP-EXPORT term 2 from protocol direct
+set policy-options policy-statement EBGP-EXPORT term 2 from protocol ospf
+set policy-options policy-statement EBGP-EXPORT term 2 then accept
+set policy-options policy-statement EBGP-EXPORT term 3 from interface lo0.0
+set policy-options policy-statement EBGP-EXPORT term 3 then accept
+set policy-options policy-statement OSPF-EXPORT term 1 then load-balance per-packet
+set policy-options policy-statement OSPF-EXPORT term 2 from interface lo0.0
+set policy-options policy-statement OSPF-EXPORT term 2 then accept
+set routing-instances mgmt_junos routing-options static route 0.0.0.0/0 next-hop 192.168.21.1
+set routing-options router-id 10.255.255.109
+set routing-options autonomous-system 65502
+set protocols bgp group INTERNAL-BGP type internal
+set protocols bgp group INTERNAL-BGP local-address 10.255.255.109
+set protocols bgp group INTERNAL-BGP neighbor 10.255.255.110 description CSR10
+set protocols bgp group INTERNAL-BGP neighbor 10.255.255.110 multihop ttl 1
+set protocols bgp group INTERNAL-BGP neighbor 10.255.255.110 shutdown
+set protocols bgp group EXTERNAL-BGP type external
+set protocols bgp group EXTERNAL-BGP export EBGP-EXPORT
+set protocols bgp group EXTERNAL-BGP local-as 65502
+set protocols bgp group EXTERNAL-BGP neighbor 172.16.255.66 description CSR6
+set protocols bgp group EXTERNAL-BGP neighbor 172.16.255.66 peer-as 65500
+set protocols isis interface ge-0/0/0.0 level 2 disable
+set protocols isis interface ge-0/0/1.0
+set protocols isis interface lo0.0 level 2 disable
+set protocols isis disable
+set protocols ospf area 0.0.0.2 stub
+set protocols ospf area 0.0.0.2 interface ge-0/0/0.0 disable
+set protocols ospf area 0.0.0.2 interface ge-0/0/0.0 interface-type p2p
+set protocols ospf area 0.0.0.2 interface ge-0/0/1.0 disable
+set protocols ospf disable
+set protocols ospf export OSPF-EXPORT
+set protocols lldp interface all
+set protocols rstp bridge-priority 16k
+set protocols rstp interface ge-0/0/0
+set protocols rstp interface ge-0/0/2
+set bridge-domains vlan-10 description "NETWORK MGMT"
+set bridge-domains vlan-10 vlan-id 10
+set bridge-domains vlan-10 routing-interface irb.10
+set bridge-domains vlan-215 description USER-215
+set bridge-domains vlan-215 vlan-id 215
+set bridge-domains vlan-215 routing-interface irb.215

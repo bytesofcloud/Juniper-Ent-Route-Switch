@@ -1,0 +1,50 @@
+﻿//// CSR11 \\\\ 
+
+set version 20200306.092717_builder.r1092714
+set system login user admin uid 1776
+set system login user admin class super-user
+set system login user admin authentication encrypted-password "$6$hUIybAjB$oaSiTlBDOoTjZ6WXI3MUUxQc.oWiEeeoRGGQDnuCIda5vXyLha3BnaxKp5/bvNOlc/ycjIvY9un37wwYAFU/t0"
+set system root-authentication encrypted-password "$6$Fh3/UMBQ$02EPxKQKf8GVI10APZoeL7aILBIZyy1alwp1WLNhzvv.19KA9YclB9ubUoZRrg4ufIDUVuIPMk3f/CVtXPhiZ0"
+set system services ssh root-login allow
+set system services ssh protocol-version v2
+set system services netconf ssh
+set system host-name CSR11
+set system domain-name bytesofcloud.local
+set system domain-search bytesofcloud.local
+set system time-zone America/Chicago
+set system management-instance
+set system syslog user * any emergency
+set system syslog file messages any notice
+set system syslog file messages authorization info
+set system syslog file interactive-commands interactive-commands any
+set interfaces ge-0/0/0 description CSR7
+set interfaces ge-0/0/0 unit 0 description CSR5
+set interfaces ge-0/0/0 unit 0 family inet address 172.16.255.38/30
+set interfaces ge-0/0/8 unit 0 description VPC-3
+set interfaces ge-0/0/8 unit 0 family bridge interface-mode access
+set interfaces ge-0/0/8 unit 0 family bridge vlan-id 201
+set interfaces ge-0/0/9 unit 0 description VPC-2
+set interfaces ge-0/0/9 unit 0 family bridge interface-mode access
+set interfaces ge-0/0/9 unit 0 family bridge vlan-id 200
+set interfaces fxp0 description "OOB MGMT"
+set interfaces fxp0 unit 0 family inet address 192.168.21.111/24
+set interfaces irb unit 200 description "SERVER 2"
+set interfaces irb unit 200 family inet address 192.168.111.1/24
+set interfaces irb unit 201 description "SERVER 1"
+set interfaces irb unit 201 family inet address 192.168.112.1/24
+set interfaces lo0 description "NETWORK MGMT"
+set interfaces lo0 unit 0 family inet address 10.255.255.111/32
+set policy-options policy-statement RIP-EXPORT term 1 from protocol direct
+set policy-options policy-statement RIP-EXPORT term 1 from protocol rip
+set policy-options policy-statement RIP-EXPORT term 1 then accept
+set routing-instances mgmt_junos routing-options static route 0.0.0.0/0 next-hop 192.168.21.1
+set routing-options router-id 10.255.255.111
+set protocols rip group RIP-NODES export RIP-EXPORT
+set protocols rip group RIP-NODES neighbor ge-0/0/0.0
+set protocols lldp interface all
+set bridge-domains vlan-200 description SERVER2
+set bridge-domains vlan-200 vlan-id 200
+set bridge-domains vlan-200 routing-interface irb.200
+set bridge-domains vlan-201 description SERVER1
+set bridge-domains vlan-201 vlan-id 201
+set bridge-domains vlan-201 routing-interface irb.201
